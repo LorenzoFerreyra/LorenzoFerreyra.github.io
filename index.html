@@ -3,69 +3,457 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyectos de Data Science</title>
+    <title>Lorenzo Ferreyra</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0a;
+            --surface: #111111;
+            --border: #1a1a1a;
+            --text: #e0e0e0;
+            --dim: #555;
+            --accent: #4a9eff;
+            --accent-dim: #4a9eff22;
+        }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
         }
 
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1em;
+        ::selection {
+            background: var(--accent);
+            color: var(--bg);
         }
 
+        .noise {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: 100;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--dim), transparent);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .greeting {
+            font-size: 0.75rem;
+            color: var(--dim);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 .accent {
+            color: var(--accent);
+        }
+
+        .tagline {
+            font-size: 0.9rem;
+            color: var(--dim);
+            max-width: 480px;
+            font-weight: 300;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background: var(--accent);
+            margin-left: 4px;
+            vertical-align: text-bottom;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* SECTIONS */
         section {
-            max-width: 800px;
-            margin: 2em auto;
-            padding: 2em;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 6rem 0;
+            border-top: 1px solid var(--border);
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
+        .section-label {
+            font-size: 0.65rem;
+            color: var(--dim);
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
         }
 
-        li {
-            margin-bottom: 1em;
+        /* ABOUT */
+        .about-text {
+            font-size: 0.95rem;
+            color: var(--dim);
+            font-weight: 300;
         }
 
-        a {
+        .about-text strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* EXPERIENCE */
+        .exp-item {
+            margin-bottom: 2.5rem;
+            padding-left: 1.5rem;
+            border-left: 1px solid var(--border);
+            transition: border-color 0.3s;
+        }
+
+        .exp-item:hover {
+            border-left-color: var(--accent);
+        }
+
+        .exp-role {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .exp-company {
+            font-size: 0.75rem;
+            color: var(--dim);
+        }
+
+        .exp-date {
+            font-size: 0.65rem;
+            color: var(--dim);
+            letter-spacing: 0.1em;
+            margin-top: 0.25rem;
+        }
+
+        /* SKILLS */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-group h3 {
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            font-weight: 400;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.7rem;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            color: var(--dim);
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .tag:hover {
+            border-color: var(--accent);
+            color: var(--text);
+            background: var(--accent-dim);
+        }
+
+        /* SERVICES */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .service-icon {
+            font-size: 0.65rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            font-weight: 400;
+        }
+
+        .service-card h3 {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-card p {
+            font-size: 0.75rem;
+            color: var(--dim);
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        /* CONTACT */
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .contact-links a {
+            font-size: 0.8rem;
+            color: var(--dim);
             text-decoration: none;
-            color: #007bff;
-            font-weight: bold;
+            transition: color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        a:hover {
-            text-decoration: underline;
+        .contact-links a::before {
+            content: '>';
+            color: var(--border);
+            transition: color 0.3s;
+        }
+
+        .contact-links a:hover {
+            color: var(--accent);
+        }
+
+        .contact-links a:hover::before {
+            color: var(--accent);
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 0.6rem;
+            color: var(--dim);
+            letter-spacing: 0.2em;
+        }
+
+        /* FADE IN */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 0 1.25rem; }
+            section { padding: 4rem 0; }
+            .skills-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Proyectos de Data Science</h1>
-    </header>
-    <section>
-        <ul>
-            <li><a href="https://lorenzoferreyra.github.io/notebook1.html">Meet Dr. Ignaz Semmelweis</a></li>
-            <li><a href="https://lorenzoferreyra.github.io/notebook2.html">Scala's real-world project repository data</a></li>
-            <li><a href="https://lorenzoferreyra.github.io/notebook3.html">Data Wrangling</a></li>
-            <li><a href="https://lorenzoferreyra.github.io/notebook4.html">The most Nobel of Prizes</a></li>
-            <li><a href="https://lorenzoferreyra.github.io/notebook5.html">Car Insurance Analysis</a></li>
-            <li><a href="https://lorenzoferreyra.github.io/notebook6.html">SAT Examination</a></li>
-            <li><a href="https://lorenzoferreyra.github.io/notebook7.html">Bank Economy</a></li>
-            <li><a href="https://lorenzoferreyra.github.io/notebook8.html.html">Netflix and Streaming</a></li>
-            <li><a href="https://lorenzoferreyra.github.io/notebook9.html">Google Play Store apps and reviews</a></li>
-            <li><a href="https://lorenzoferreyra.github.io/notebook10.html">The oldest businesses in the world</a></li>
-            <li><a href="https://lorenzoferreyra.github.io/notebook11.html">The movies</a></li>
-        </ul>
-    </section>
+    <div class="noise"></div>
+
+    <div class="container">
+        <div class="hero">
+            <p class="greeting">hello, world</p>
+            <h1>Lorenzo <span class="accent">Ferreyra</span><span class="cursor"></span></h1>
+            <p class="tagline">Building things with data and code. Statistics, backend systems, and machine learning pipelines.</p>
+        </div>
+
+        <section class="fade-in">
+            <p class="section-label">About</p>
+            <p class="about-text">
+                Sociology graduate with a <strong>Computer Science</strong> major. I work at the intersection of <strong>data engineering</strong> and <strong>software development</strong> — from data integration and pipeline architecture to Django backends and cloud infrastructure. Currently diving deep into <strong>machine learning</strong> and <strong>AI</strong>.
+            </p>
+        </section>
+
+        <section class="fade-in">
+            <p class="section-label">Experience</p>
+
+            <div class="exp-item">
+                <p class="exp-role">Technical Consultant</p>
+                <p class="exp-company">Cordion.io</p>
+                <p class="exp-date">Jan 2026 — Present</p>
+            </div>
+
+            <div class="exp-item">
+                <p class="exp-role">DevOps Analyst</p>
+                <p class="exp-company">Media Optimizers LLC</p>
+                <p class="exp-date">Mar 2024 — Dec 2025</p>
+            </div>
+
+            <div class="exp-item">
+                <p class="exp-role">Data Analyst</p>
+                <p class="exp-company">Aardvark Partners LLC</p>
+                <p class="exp-date">Feb 2023 — Feb 2024</p>
+            </div>
+
+            <div class="exp-item">
+                <p class="exp-role">Teaching & Research Assistant</p>
+                <p class="exp-company">Universidad de Flores</p>
+                <p class="exp-date">Jun 2023 — Present</p>
+            </div>
+
+            <div class="exp-item">
+                <p class="exp-role">Data Analyst</p>
+                <p class="exp-company">Qendar SA</p>
+                <p class="exp-date">Jan 2022 — Dec 2022</p>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <p class="section-label">Stack</p>
+            <div class="skills-grid">
+                <div class="skill-group">
+                    <h3>Data</h3>
+                    <div class="skill-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">SQL</span>
+                        <span class="tag">R</span>
+                        <span class="tag">Power BI</span>
+                        <span class="tag">Looker Studio</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <h3>Backend</h3>
+                    <div class="skill-tags">
+                        <span class="tag">Django</span>
+                        <span class="tag">FastAPI</span>
+                        <span class="tag">Go</span>
+                        <span class="tag">Firebase</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <h3>Cloud</h3>
+                    <div class="skill-tags">
+                        <span class="tag">AWS EC2</span>
+                        <span class="tag">RDS</span>
+                        <span class="tag">Lambda</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <h3>Currently Learning</h3>
+                    <div class="skill-tags">
+                        <span class="tag">Machine Learning</span>
+                        <span class="tag">AI</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <p class="section-label">Services</p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <p class="service-icon">// 01</p>
+                    <h3>Software Development</h3>
+                    <p>Custom solutions from web apps to complex systems. Focused on user experience, robust functionality, and clean architecture.</p>
+                </div>
+                <div class="service-card">
+                    <p class="service-icon">// 02</p>
+                    <h3>Data Engineering</h3>
+                    <p>End-to-end data pipelines, ETL workflows, and API integrations. Clean, reliable data infrastructure that scales with your business.</p>
+                </div>
+                <div class="service-card">
+                    <p class="service-icon">// 03</p>
+                    <h3>Data Analytics</h3>
+                    <p>Interactive dashboards, automated reporting, and pattern analysis. Turn raw data into strategic decisions.</p>
+                </div>
+                <div class="service-card">
+                    <p class="service-icon">// 04</p>
+                    <h3>Process Automation</h3>
+                    <p>Streamline operations and cut costs. From initial assessment to implementation and ongoing support, aligned with your goals.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <p class="section-label">Contact</p>
+            <div class="contact-links">
+                <a href="https://github.com/LorenzoFerreyra" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://www.linkedin.com/in/lorenzo-ferreyra" target="_blank" rel="noopener">LinkedIn</a>
+            </div>
+        </section>
+
+        <footer>
+            <p>Lorenzo Ferreyra &copy; 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
 </body>
 </html>
